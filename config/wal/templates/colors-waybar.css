@@ -1,0 +1,9 @@
+@define-color bg {background};
+@define-color fg {foreground};
+@define-color accent {color5};
+@define-color accent2 {color4};
+@define-color accent3 {color6};
+@define-color green {color2};
+@define-color red {color1};
+@define-color yellow {color3};
+@define-color dim {color8};

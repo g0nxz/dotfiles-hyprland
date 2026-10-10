@@ -1,0 +1,5 @@
+*.ovpn
+*.log
+config/hypr/wall
+config/waybar/target
+config/waybar/ports

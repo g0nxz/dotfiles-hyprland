@@ -1,0 +1,86 @@
+configuration {
+    modi: "drun,filebrowser,run,window";
+    show-icons: true;
+    drun-display-format: "{name}";
+    font: "JetBrainsMono Nerd Font 11";
+    display-drun: "  apps";
+    display-filebrowser: "  files";
+    display-run: "  term";
+    display-window: "  window";
+}
+
+@import "/home/g0nxz/.cache/wal/colors-rofi.rasi"
+
+* {
+    background-color: transparent;
+    text-color:       @fg;
+}
+
+window {
+    width: 640px;
+    border-radius: 16px;
+    background-color: @bg;
+    padding: 14px;
+}
+
+mainbox {
+    orientation: vertical;
+    spacing: 12px;
+    children: [ inputbar, body ];
+}
+
+inputbar {
+    background-color: @bg-alt;
+    border-radius: 12px;
+    padding: 12px 16px;
+    children: [ entry ];
+}
+entry {
+    text-color: @fg;
+    placeholder: "  Search ...";
+    placeholder-color: @fg-dim;
+}
+
+body {
+    orientation: horizontal;
+    spacing: 12px;
+    children: [ mode-switcher, listview ];
+}
+
+mode-switcher {
+    orientation: vertical;
+    spacing: 8px;
+    width: 130px;
+}
+button {
+    background-color: @bg-alt;
+    text-color: @fg-dim;
+    border-radius: 10px;
+    padding: 12px;
+    horizontal-align: 0;
+}
+button selected {
+    background-color: @sel;
+    text-color: #ffffff;
+}
+
+listview {
+    background-color: @bg-alt;
+    border-radius: 12px;
+    padding: 6px;
+    spacing: 2px;
+    lines: 6;
+    scrollbar: false;
+}
+
+element {
+    padding: 9px 12px;
+    border-radius: 10px;
+    background-color: transparent;
+    text-color: @fg;
+}
+element normal.normal    { background-color: transparent; text-color: @fg; }
+element alternate.normal { background-color: transparent; text-color: @fg; }
+element selected.normal  { background-color: @accent;     text-color: @bg; }
+element-icon { size: 20px; margin: 0 10px 0 0; }
+element-text { vertical-align: 0.5; }

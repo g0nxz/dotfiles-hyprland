@@ -1,0 +1,9 @@
+* {{
+    bg:          rgba({background.rgb}, 0.95);
+    bg-alt:      rgba({color8.rgb}, 0.90);
+    sel:         {color5};
+    fg:          {foreground};
+    fg-dim:      {color7};
+    accent:      {color5};
+    accent-dim:  rgba({color5.rgb}, 0.30);
+}}

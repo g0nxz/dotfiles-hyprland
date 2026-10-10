@@ -1,0 +1,36 @@
+@import "/home/g0nxz/.cache/wal/colors-waybar.css";
+
+* {
+  font-family: "JetBrainsMono Nerd Font";
+  font-size: 13px;
+  min-height: 0;
+}
+window#waybar { background: transparent; }
+
+#custom-logo, #clock, #network, #custom-vpn, #workspaces,
+#custom-target, #custom-ports, #pulseaudio, #custom-power {
+  background: alpha(@bg, 0.6);
+  padding: 2px 12px;
+  margin: 4px 3px;
+  border-radius: 14px;
+  border: 1px solid alpha(@accent, 0.25);
+}
+
+#custom-logo   { color: @accent; font-size: 15px; }
+#clock         { color: @accent2; }
+#network       { color: @accent2; }
+#custom-vpn    { color: @green; }
+#custom-target { color: @red; }
+#custom-ports  { color: @yellow; }
+#pulseaudio    { color: @accent3; }
+#custom-power  { color: @red; }
+
+#workspaces button {
+  color: @dim;
+  padding: 0 5px;
+  font-size: 11px;
+  background: transparent;
+  border: none;
+}
+#workspaces button.active { color: @accent; }
+#workspaces button:hover  { color: @accent2; }

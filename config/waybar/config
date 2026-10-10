@@ -1,0 +1,56 @@
+{
+  "layer": "top",
+  "position": "top",
+  "height": 35,
+  "margin-top": 6,
+  "margin-left": 10,
+  "margin-right": 10,
+  "spacing": 6,
+  "modules-left": ["custom/logo", "clock", "network", "custom/vpn"],
+  "modules-center": ["hyprland/workspaces"],
+  "modules-right": ["custom/target", "custom/ports", "pulseaudio", "custom/power"],
+
+  "custom/logo": { "format": "\uf327 ", "on-click": "rofi -show drun", "tooltip": false },
+  "clock": {
+    "format": "  {:%b %I:%M %p}",
+    "format-alt": "  {:%a %d %b}",
+    "tooltip-format": "<tt>{calendar}</tt>"
+  },
+  "network": {
+    "format-ethernet": "\uf6ff  {ipaddr}",
+    "format-wifi": "\uf1eb  {ipaddr}",
+    "format-disconnected": "\uf6ff  off",
+    "tooltip-format": "{ifname}: {ipaddr}"
+  },
+  "custom/vpn": {
+    "exec": "ip -4 addr show tun0 2>/dev/null | awk '/inet /{print $2}' | cut -d/ -f1 | grep . || echo 'sin vpn'",
+    "interval": 5,
+    "format": "\uf1b2  {}",
+    "tooltip": false
+  },
+  "hyprland/workspaces": {
+    "format": "{icon}",
+    "format-icons": { "active": "\uf111", "default": "\uf10c" },
+    "persistent-workspaces": { "*": 5 },
+    "on-click": "activate"
+  },
+  "custom/target": {
+    "exec": "cat ~/.config/waybar/target 2>/dev/null | grep . || echo 'No target'",
+    "interval": 3,
+    "format": "\uf140  {}",
+    "tooltip": false
+  },
+  "custom/ports": {
+    "exec": "cat ~/.config/waybar/ports 2>/dev/null | grep . || echo 'No ports'",
+    "interval": 3,
+    "format": "  {}",
+    "tooltip": false
+  },
+  "pulseaudio": {
+    "format": "{icon}  {volume}%",
+    "format-muted": "  mute",
+    "format-icons": { "default": ["", "", ""] },
+    "on-click": "pavucontrol"
+  },
+  "custom/power": { "format": "  ⏻", "on-click": "wlogout -b 5", "tooltip": false }
+}
