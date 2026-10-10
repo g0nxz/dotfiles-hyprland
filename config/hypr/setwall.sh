@@ -36,5 +36,6 @@ cp ~/.cache/wal/dunstrc ~/.config/dunst/dunstrc 2>/dev/null
 dunstctl reload 2>/dev/null || killall dunst 2>/dev/null
 
 killall -SIGUSR2 waybar 2>/dev/null
+tmux source-file ~/.cache/wal/colors-tmux.conf 2>/dev/null
 
 hyprctl reload

@@ -38,6 +38,7 @@
     "exec": "cat ~/.config/waybar/target 2>/dev/null | grep . || echo 'No target'",
     "interval": 3,
     "format": "\uf140  {}",
+    "on-click-right": "echo -n > ~/.config/waybar/target; echo -n > ~/.config/waybar/ports",
     "tooltip": false
   },
   "custom/ports": {

@@ -279,3 +279,45 @@ settarget() {
   echo " Target: $1  (escaneando puertos...)"
 }
 cleartarget() { : > ~/.config/waybar/target; : > ~/.config/waybar/ports; echo "Target limpiado"; }
+
+# ===== Herramientas modernas =====
+# eza (ls mejorado)
+if command -v eza >/dev/null; then
+  alias ls='eza --icons --group-directories-first'
+  alias ll='eza -l --icons --group-directories-first'
+  alias la='eza -la --icons --group-directories-first'
+  alias lt='eza --tree --level=2 --icons'
+fi
+
+# bat (cat mejorado) -> en Kali el binario es batcat
+if command -v batcat >/dev/null; then
+  alias cat='batcat --paging=never'
+  alias bat='batcat'
+fi
+
+# zoxide (cd inteligente) -> usa 'z <dir>'
+command -v zoxide >/dev/null && eval "$(zoxide init zsh)"
+
+# fzf (fuzzy finder) -> Ctrl+R historial, Ctrl+T archivos, Alt+C cd
+if command -v fzf >/dev/null; then
+  eval "$(fzf --zsh)" 2>/dev/null || {
+    [ -f /usr/share/doc/fzf/examples/key-bindings.zsh ] && source /usr/share/doc/fzf/examples/key-bindings.zsh
+    [ -f /usr/share/doc/fzf/examples/completion.zsh ]   && source /usr/share/doc/fzf/examples/completion.zsh
+  }
+fi
+
+# ===== Funciones pentesting =====
+function mkt(){
+	mkdir -p {nmap,content,exploits,scripts}
+}
+
+function extractPorts(){
+	ports="$(cat "$1" | grep -oP '\d{1,5}/open' | awk '{print $1}' FS='/' | xargs | tr ' ' ',')"
+	ip_address="$(cat "$1" | grep -oP '\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}' | sort -u | head -n 1)"
+	echo -e "\n[*] Extracting information...\n" > extractPorts.tmp
+	echo -e "\t[*] IP Address: $ip_address" >> extractPorts.tmp
+	echo -e "\t[*] Open ports: $ports\n" >> extractPorts.tmp
+	echo "$ports" | tr -d '\n' | wl-copy
+	echo -e "[*] Ports copied to clipboard\n" >> extractPorts.tmp
+	cat extractPorts.tmp; rm extractPorts.tmp
+}
