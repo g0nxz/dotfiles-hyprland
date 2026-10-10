@@ -15,4 +15,5 @@ done
 [ -f "$HOME/.zshrc" ]    && { mkdir -p home; cp "$HOME/.zshrc" home/; }
 [ -f "$HOME/.p10k.zsh" ] && { mkdir -p home; cp "$HOME/.p10k.zsh" home/; }
 
+[ -f "$HOME/bloodhound-ce/docker-compose.yml" ] && { mkdir -p bloodhound-ce; cp "$HOME/bloodhound-ce/docker-compose.yml" bloodhound-ce/; }
 echo "Backup actualizado en $REPO"

@@ -323,3 +323,5 @@ function extractPorts(){
 }
 export PATH="$HOME/tools:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
+alias bhce-up='sudo docker-compose -f ~/bloodhound-ce/docker-compose.yml up -d'
+alias bhce-down='sudo docker-compose -f ~/bloodhound-ce/docker-compose.yml down'
