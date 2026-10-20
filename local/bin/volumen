@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+# Uso: volumen up | down | mute
+STEP=5
+SINK=@DEFAULT_AUDIO_SINK@
+NOTIF_ID=9991
+
+case "$1" in
+  up)   wpctl set-mute "$SINK" 0; wpctl set-volume -l 1.0 "$SINK" "${STEP}%+" ;;
+  down) wpctl set-volume "$SINK" "${STEP}%-" ;;
+  mute) wpctl set-mute "$SINK" toggle ;;
+  *)    echo "Uso: volumen up|down|mute"; exit 1 ;;
+esac
+
+read -r _ vol muted <<< "$(wpctl get-volume "$SINK")"
+pct=$(awk -v v="$vol" 'BEGIN{printf "%d", v*100+0.5}')
+
+if [[ "$muted" == "[MUTED]" ]]; then
+  icon=audio-volume-muted; texto="Silenciado"; barra=0
+else
+  texto="Volumen ${pct}%"; barra=$pct
+  if   (( pct == 0 ));  then icon=audio-volume-muted
+  elif (( pct < 34 ));  then icon=audio-volume-low
+  elif (( pct < 67 ));  then icon=audio-volume-medium
+  else                       icon=audio-volume-high
+  fi
+fi
+
+notify-send -a volumen -u low -i "$icon" -t 1500 -r "$NOTIF_ID" \
+  -h string:x-canonical-private-synchronous:volumen \
+  -h string:x-dunst-stack-tag:volumen \
+  -h int:value:"$barra" "$texto"

@@ -17,3 +17,7 @@ done
 
 [ -f "$HOME/bloodhound-ce/docker-compose.yml" ] && { mkdir -p bloodhound-ce; cp "$HOME/bloodhound-ce/docker-compose.yml" bloodhound-ce/; }
 echo "Backup actualizado en $REPO"
+
+# Scripts propios
+mkdir -p "$(dirname "$0")/local/bin"
+cp ~/.local/bin/volumen "$(dirname "$0")/local/bin/"
