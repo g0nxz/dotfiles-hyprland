@@ -4,15 +4,15 @@ IMG="$1"
 
 echo "$IMG" > ~/.config/hypr/wall
 
-pkill mpvpaper 2>/dev/null
-pkill hyprpaper 2>/dev/null
-sleep 0.3
-
 ext="${IMG##*.}"; ext="${ext,,}"
 LOCKSRC="$IMG"
 
 case "$ext" in
   mp4|mkv|webm|gif)
+    awww kill 2>/dev/null
+    pkill hyprpaper 2>/dev/null
+    pkill mpvpaper 2>/dev/null
+    sleep 0.3
     mpvpaper -o "no-audio loop-file=inf --hwdec=auto" '*' "$IMG" &
     frame="/tmp/wal-frame.png"
     ffmpeg -y -i "$IMG" -vframes 1 "$frame" >/dev/null 2>&1
@@ -20,11 +20,12 @@ case "$ext" in
     LOCKSRC="$frame"
     ;;
   *)
-    hyprpaper &
-    sleep 1
-    hyprctl hyprpaper preload "$IMG"
-    hyprctl hyprpaper wallpaper "HDMI-A-1,$IMG"
-    hyprctl hyprpaper wallpaper "DP-1,$IMG"
+    pkill hyprpaper 2>/dev/null
+    pgrep -x awww-daemon >/dev/null || { setsid -f awww-daemon >/dev/null 2>&1; sleep 0.5; }
+    awww img "$IMG" \
+      --transition-type grow --transition-pos center \
+      --transition-duration 1.5 --transition-fps 120
+    pkill mpvpaper 2>/dev/null
     wal -i "$IMG" -n -q
     ;;
 esac
