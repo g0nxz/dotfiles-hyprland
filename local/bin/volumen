@@ -3,6 +3,8 @@
 STEP=5
 SINK=@DEFAULT_AUDIO_SINK@
 NOTIF_ID=9991
+SEG=20                       # segmentos de la barra
+CACHE=~/.cache/volumen; mkdir -p "$CACHE"
 
 case "$1" in
   up)   wpctl set-mute "$SINK" 0; wpctl set-volume -l 1.0 "$SINK" "${STEP}%+" ;;
@@ -14,18 +16,37 @@ esac
 read -r _ vol muted <<< "$(wpctl get-volume "$SINK")"
 pct=$(awk -v v="$vol" 'BEGIN{printf "%d", v*100+0.5}')
 
-if [[ "$muted" == "[MUTED]" ]]; then
-  icon=audio-volume-muted; texto="Silenciado"; barra=0
-else
-  texto="Volumen ${pct}%"; barra=$pct
-  if   (( pct == 0 ));  then icon=audio-volume-muted
-  elif (( pct < 34 ));  then icon=audio-volume-low
-  elif (( pct < 67 ));  then icon=audio-volume-medium
-  else                       icon=audio-volume-high
-  fi
+# Colores del tema actual de pywal (con valores de reserva)
+fg="#c0c0c2"; acc="#a0a0ff"; dim="#545467"
+[[ -f ~/.cache/wal/colors.sh ]] && source ~/.cache/wal/colors.sh \
+  && fg="$foreground" && acc="$color5" && dim="$color8"
+
+# Estado: silencio / bajo / alto
+if [[ "$muted" == "[MUTED]" || $pct -eq 0 ]]; then estado=mute; lleno=0
+elif (( pct < 50 )); then estado=low;  lleno=$(( (pct*SEG+50)/100 ))
+else                      estado=high; lleno=$(( (pct*SEG+50)/100 ))
 fi
 
-notify-send -a volumen -u low -i "$icon" -t 1500 -r "$NOTIF_ID" \
+# Icono SVG con los colores del tema
+icono="$CACHE/vol-$estado-${acc#\#}-${fg#\#}.svg"
+if [[ ! -f "$icono" ]]; then
+  altavoz="<path fill='$acc' d='M3 9v6h4l5 5V4L7 9H3z'/>"
+  onda1="<path fill='$acc' d='M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z'/>"
+  onda2="<path fill='$acc' d='M14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z'/>"
+  cruz="<path stroke='$acc' stroke-width='2' stroke-linecap='round' d='M16 9l5 6M21 9l-5 6'/>"
+  case $estado in
+    mute) dentro="$altavoz$cruz" ;;
+    low)  dentro="$altavoz$onda1" ;;
+    high) dentro="$altavoz$onda1$onda2" ;;
+  esac
+  echo "<svg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 24 24'>$dentro</svg>" > "$icono"
+fi
+
+# Barra de texto: parte llena en color de acento, parte vacía atenuada
+rep(){ local s=""; for ((i=0; i<$2; i++)); do s+="$1"; done; printf '%s' "$s"; }
+barra="<span foreground='$acc'>$(rep '━' "$lleno")</span><span foreground='$dim'>$(rep '━' $((SEG-lleno)))</span>"
+
+notify-send -a volumen -u low -i "$icono" -t 1500 -r "$NOTIF_ID" \
   -h string:x-canonical-private-synchronous:volumen \
   -h string:x-dunst-stack-tag:volumen \
-  -h int:value:"$barra" "$texto"
+  "Volumen" "$barra"

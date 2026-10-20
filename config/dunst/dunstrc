@@ -1,4 +1,9 @@
 [global]
+    enable_recursive_icon_lookup = true
+    icon_theme = "Papirus-Dark"
+    progress_bar_corner_radius = 4
+    progress_bar_frame_width = 0
+    progress_bar_height = 8
     monitor = 0
     follow = mouse
     width = 340
@@ -24,24 +29,29 @@
     mouse_right_click = close_all
 
 [urgency_low]
-    background = "#140d20"
-    foreground = "#c4c2c7"
-    frame_color = "#655d71"
+    background = "#05050bd9"
+    foreground = "#c0c0c2"
+    frame_color = "#545467"
+    highlight = "#CC044E"
     timeout = 5
 
 [urgency_normal]
-    background = "#140d20"
-    foreground = "#c4c2c7"
-    frame_color = "#B22CC2"
+    background = "#05050bd9"
+    foreground = "#c0c0c2"
+    frame_color = "#CC044E"
+    highlight = "#CC044E"
     timeout = 8
 
 [urgency_critical]
-    background = "#140d20"
-    foreground = "#c4c2c7"
-    frame_color = "#543FB8"
+    background = "#05050bd9"
+    foreground = "#c0c0c2"
+    frame_color = "#661E4E"
+    highlight = "#CC044E"
     timeout = 0
 
 [volumen]
-appname = volumen
-history_ignore = yes
-format = "<b>%s</b>"
+    format = "%b"
+    markup = full
+    icon_position = left
+    appname = volumen
+    history_ignore = yes
